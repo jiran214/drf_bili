@@ -30,7 +30,7 @@ services:
   db:
     image: mysql
     env_file:
-      - ./bilibili/.sqlenv # 使用了环境变量文件
+      - ./drf_bilibili/.sqlenv # 使用了环境变量文件
     networks:
       - db_network
     volumes:
@@ -42,7 +42,7 @@ services:
     restart: always
 
   web:
-    build: ../drf_bilibili/bilibili
+    build: ./drf_bilibili
     expose:
       - "8000"
     volumes:
