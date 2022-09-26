@@ -2,6 +2,7 @@
 FROM python:3.8
 
 # 安装netcat
+RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
 RUN apt-get update && apt install -y netcat
 RUN #yum install -y netcat
 # 镜像作者
@@ -12,7 +13,9 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # 可选：设置镜像源为国内
-COPY pip.conf /root/.pip/pip.conf
+RUN pip install -i https://pypi.douban.com/simple/ -U pip
+RUN pip config set global.index-url https://pypi.douban.com/simple/
+#COPY pip.conf /root/.pip/pip.conf
 
 # 容器内创建 bilibili 文件夹
 ENV APP_HOME=/var/www/html/bilibili
@@ -23,7 +26,7 @@ WORKDIR $APP_HOME
 ADD . $APP_HOME
 
 # 更新pip版本
-RUN /usr/local/bin/python -m pip install --upgrade pip
+RUN #/usr/local/bin/python -m pip install --upgrade pip
 
 # 安装项目依赖
 RUN pip install -r requirements.txt
