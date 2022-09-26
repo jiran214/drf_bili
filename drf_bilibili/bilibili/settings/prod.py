@@ -9,7 +9,7 @@ DATABASES = {
         'PORT': 3306,  # 数据库端口
         'USER': 'root',  # 数据库用户名
         'PASSWORD': '123456',  # 数据库用户密码
-        'NAME': 'bili'  # 数据库名字
+        'NAME': 'bilibili'  # 数据库名字
     }
 }
 
