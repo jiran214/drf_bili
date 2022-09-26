@@ -30,7 +30,7 @@ services:
   db:
     image: mysql
     env_file:
-      - ./bilibili/.env # 使用了环境变量文件
+      - ./bilibili/.sqlenv # 使用了环境变量文件
     networks:
       - db_network
     volumes:
