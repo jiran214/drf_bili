@@ -19,3 +19,4 @@ dump.rdb
 *.log
 *.zip
 *.swp
+/drf_bilibili/static/
