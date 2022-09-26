@@ -2,8 +2,8 @@
 FROM python:3.8
 
 # 安装netcat
-#RUN apt-get update && apt install -y netcat
-RUN yum install -y netcat
+RUN apt-get update && apt install -y netcat
+RUN #yum install -y netcat
 # 镜像作者
 MAINTAINER JiRan
 
