@@ -9,14 +9,6 @@ class NoteFilter(django_filters.rest_framework.FilterSet):
     """
 
     # 视频数据
-
-
-
-
-
-
-
-
     view_n_max =django_filters.NumberFilter(field_name="view_n",lookup_expr='lte')
     view_n_min =django_filters.NumberFilter(field_name="view_n",lookup_expr='gte')
     danmaku_max =django_filters.NumberFilter(field_name="danmaku",lookup_expr='lte')
@@ -33,7 +25,7 @@ class NoteFilter(django_filters.rest_framework.FilterSet):
     like_n_min = django_filters.NumberFilter(field_name="like_n",lookup_expr='gte')
 
     # 热门标签过滤
-    # title=django_filters.CharFilter(field_name='title',lookup_expr='icontains')
+    tag=django_filters.CharFilter(field_name='tag',lookup_expr='icontains')
 
     # 基础信息：时长(单位：秒)、类型、团队、活动、观众性别
     duration_min = django_filters.NumberFilter(field_name="duration",lookup_expr='gte')
@@ -41,6 +33,7 @@ class NoteFilter(django_filters.rest_framework.FilterSet):
 
     # 发布时间
     pubdate = django_filters.NumberFilter(method="pubdate_filter",help_text="发布时间多少天以内")
+    category = django_filters.CharFilter(method="category_filter",help_text="一级分类")
     # 高级筛选
 
     def pubdate_filter(self,queryset, name, value,):
@@ -55,6 +48,14 @@ class NoteFilter(django_filters.rest_framework.FilterSet):
         ts = time.time() - 86400 * int(value)
         print(ts)
         return queryset.filter(pubdate__gte=ts)
+
+    def category_filter(self, queryset, name, value,):
+        filed_map={
+            '动物圈':( '喵星人' , '汪星人' , '大熊猫' , '野生动物' , '爬宠动物' , '综合' ),
+            '舞蹈':('中国舞' , '宅舞' , '明星舞蹈' , '舞蹈教程' , '舞蹈综合' , '街舞')
+        }
+        if filed_map[value]:
+            return queryset.filter(tname__in=filed_map[value])
 
     class Meta:
         model = Info

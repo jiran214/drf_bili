@@ -30,4 +30,4 @@ class KolFilter(django_filters.rest_framework.FilterSet):
 
     class Meta:
         model = Info
-        fields = ['sex','notes__id']
+        fields = ['sex','user_level']

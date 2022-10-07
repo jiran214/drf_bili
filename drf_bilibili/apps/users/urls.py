@@ -18,7 +18,7 @@ router.register(r'code',EmailCodeViewSet,basename='code')
 urlpatterns = [
     # 登录
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('login/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('login', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('verify/', TokenVerifyView.as_view(), name='token_verify'),
 # 发送一封邮件

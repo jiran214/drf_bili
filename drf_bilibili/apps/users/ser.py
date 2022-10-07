@@ -1,3 +1,4 @@
+import re
 from datetime import timedelta, datetime
 
 from django.contrib.auth import get_user_model
@@ -15,7 +16,7 @@ class UserDetailSer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ["name", "gender", "birthday", "email", "email", "image"]
+        fields = ["name", "gender", "birthday", "email", "mobile","image"]
 
 
 class UserRegSer(serializers.ModelSerializer):
@@ -60,10 +61,11 @@ class EmailSer(serializers.Serializer):
         if User.objects.filter(email=email).count():
             raise serializers.ValidationError("用户已经存在")
         # 验证手机号码是否合法
-        # if re.match(REGEX_MOBILE, email):
-        # raise serializers.ValidationError("手机号码非法")
-        # 验证发送频率
 
+        regex = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+        if not re.search(regex,email):
+            raise serializers.ValidationError("邮箱非法")
+        # 验证发送频率
         redis = get_redis_connection()
         if redis.exists(email):
             raise serializers.ValidationError("请求频繁，请稍后重试")

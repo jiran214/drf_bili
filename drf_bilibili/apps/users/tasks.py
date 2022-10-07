@@ -2,7 +2,6 @@ from django.core.mail import send_mail
 # from __future__ import absolute_import, unicode_literals
 from celery import shared_task, Task
 
-# from bilibili.settings import dev as settings
 from django.conf import settings
 
 class BaseTask(Task):

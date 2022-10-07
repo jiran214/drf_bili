@@ -7,6 +7,7 @@ from rest_framework.throttling import AnonRateThrottle
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
+from apps.note.filters import NoteFilter
 from apps.note.ser import Info,Danmu,Comment,Danmu_hotwords,Comment_hotwords,\
     NoteInfoSer,NoteDanmuSer,NoteCommentSer,DanmuHotWordsSer,CommentHotWordsSer
 
@@ -63,28 +64,12 @@ class NotePagination(PageNumberPagination):
 
 # Create your views here.
 
-class NoteInfoViewSet(CacheResponseMixin,mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet):
-    """
+class NoteInfoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet):
 
-    """
-    data = {
-        "cid": 1,
-        "aid": 1,
-        "bv": "BV1****1b7pv",
-        "title": "测试稿件1",
-        "cover": "41544f38.jpg",
-        "tid": 230,
-        "no_reprint": 1,
-        "desc": "11111111",
-        "tag": "生活记录,音乐",
-        "copyright": 1,
-        # "ctime": 1637208454,
-        # "ptime": 1637208509
-    }
     # 认证权限
     # authentication_classes = [SessionAuthentication]
     # permission_classes = [VipPermission]
-    throttle_classes = [AnonRateThrottle]
+    # throttle_classes = [AnonRateThrottle]
 
     queryset = Info.objects.all()
     serializer_class = NoteInfoSer
@@ -92,8 +77,8 @@ class NoteInfoViewSet(CacheResponseMixin,mixins.RetrieveModelMixin, mixins.ListM
     filter_backends = [DjangoFilterBackend,filters.SearchFilter, filters.OrderingFilter]
     # content_negotiation_class = api_settings.DEFAULT_CONTENT_NEGOTIATION_CLASS
 
-    # filter_class= NoteFilter
-    search_fields = ('',)
+    filter_class= NoteFilter
+    search_fields = ('title',)
     ordering_fields = ('view_n','danmaku','reply','favorite','coin','share','like_n')
 
     # def get_queryset(self):

@@ -18,7 +18,7 @@ class KolPagination(PageNumberPagination):
     """
     自定义分页类
     """
-    page_size = 20
+    page_size = 10
     page_size_query_param = 'page_size'
     page_query_param = "page"
     max_page_size = 100
@@ -67,7 +67,7 @@ class KolInfoViewSet(CacheResponseMixin,mixins.RetrieveModelMixin, mixins.ListMo
     """
 
     # 认证权限
-    authentication_classes = [SessionAuthentication]
+    # authentication_classes = [SessionAuthentication]
     # permission_classes = [IsAdminUser, IsAuthenticated]
     # throttle_classes = [AnonRateThrottle]
     pagination_class = KolPagination
@@ -79,6 +79,6 @@ class KolInfoViewSet(CacheResponseMixin,mixins.RetrieveModelMixin, mixins.ListMo
     # filter_fields=['user_name','title']
     filter_class = KolFilter
     # 根据用户权限选择mid、name、sign、认证信息、标签作为动态搜索条件
-    search_fields = ['']
+    search_fields = ['user_name', 'mid', 'sign']
     # 还可根据互动数据和指数排序
-    ordering_fields = ('follower', 'play_view')
+    ordering_fields = ['follower', 'play_view','likes']

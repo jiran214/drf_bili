@@ -41,6 +41,7 @@ class UserViewSet(CreateModelMixin, RetrieveModelMixin, UpdateModelMixin, viewse
         return Response(re_dict, status=status.HTTP_201_CREATED, headers=headers)
 
     def get_object(self):
+        print(self.request.user)
         return self.request.user
 
     def perform_create(self, serializer):
