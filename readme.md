@@ -180,14 +180,11 @@
 8. 其它：权限、流量控制，jwt认证
 
 ### 功能预览（按应用划分）
-
-```html
-<img src="https://github.com/yuchen59384/drf_bili/blob/master/Snipaste_2022-10-09_13-40-56.png"/>
-<img src="https://github.com/yuchen59384/drf_bili/blob/master/Snipaste_2022-10-09_13-41-41.png"/>
-<img src="https://github.com/yuchen59384/drf_bili/blob/master/Snipaste_2022-10-09_13-42-03.png"/>
-<img src="https://github.com/yuchen59384/drf_bili/blob/master/Snipaste_2022-10-09_13-38-01.png"/>
-<img src="https://github.com/yuchen59384/drf_bili/blob/master/Snipaste_2022-10-09_13-42-16.png"/>
-```
+![avatar](./Snipaste_2022-10-09_13-40-56.png)
+![avatar](./Snipaste_2022-10-09_13-41-41.png)
+![avatar](./Snipaste_2022-10-09_13-42-03.png)
+![avatar](./Snipaste_2022-10-09_13-38-01.png)
+![avatar](./Snipaste_2022-10-09_13-42-16.png)
 
 
 
