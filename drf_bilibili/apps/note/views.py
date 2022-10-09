@@ -8,14 +8,10 @@ from rest_framework.viewsets import GenericViewSet
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
 from apps.note.filters import NoteFilter
-from apps.note.ser import Info,Danmu,Comment,Danmu_hotwords,Comment_hotwords,\
-    NoteInfoSer,NoteDanmuSer,NoteCommentSer,DanmuHotWordsSer,CommentHotWordsSer
+from apps.note.ser import Info, Danmu, Comment, Danmu_hotwords, Comment_hotwords, \
+    NoteInfoSer, NoteDanmuSer, NoteCommentSer, DanmuHotWordsSer, CommentHotWordsSer, NoteDetailSer
 
-from django.views.decorators.cache import cache_page
 from apps.note import tasks
-
-#celery
-from celery.result import AsyncResult
 
 class CustomSearchFilter(filters.SearchFilter):
     """
@@ -64,44 +60,46 @@ class NotePagination(PageNumberPagination):
 
 # Create your views here.
 
-class NoteInfoViewSet(mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet):
-
+class NoteInfoViewSet(mixins.ListModelMixin, GenericViewSet):
     # 认证权限
     # authentication_classes = [SessionAuthentication]
     # permission_classes = [VipPermission]
     # throttle_classes = [AnonRateThrottle]
 
-    queryset = Info.objects.all()
+    queryset = Info.objects
     serializer_class = NoteInfoSer
     pagination_class = NotePagination
-    filter_backends = [DjangoFilterBackend,filters.SearchFilter, filters.OrderingFilter]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     # content_negotiation_class = api_settings.DEFAULT_CONTENT_NEGOTIATION_CLASS
 
-    filter_class= NoteFilter
-    search_fields = ('title',)
-    ordering_fields = ('view_n','danmaku','reply','favorite','coin','share','like_n')
+    filter_class = NoteFilter
+    search_fields = ('title', 'des', 'aid', 'bvid')
+    ordering_fields = ('view_n', 'danmaku', 'reply', 'favorite', 'coin', 'share', 'like_n')
 
-    # def get_queryset(self):
 
-    @method_decorator(cache_page(15))
-    def dispatch(self, request, *args, **kwargs):
-        # res = tasks.add.delay(2,2)
-        # print({'status': res.status, 'task_id': res.task_id})
-        # print(AsyncResult(res.task_id).result)
-        return super().dispatch(request, *args, **kwargs)
+class NoteDetailViewSet(mixins.RetrieveModelMixin, GenericViewSet):
+    """
+    功能：评论分析、弹幕分析、人气表现
+
+    retrieve:
+    返回最新笔记的详情信息
+
+    """
+    queryset = Info.objects
+    serializer_class = NoteDetailSer
 
 class CommentViewSet(viewsets.ModelViewSet):
     """
 
     """
-    queryset = Comment.objects.all()
+    queryset = Comment.objects
     serializer_class = NoteCommentSer
 
 class CommentHotWordsViewSet(viewsets.ModelViewSet):
     """
 
     """
-    queryset = Comment_hotwords.objects.all()
+    queryset = Comment_hotwords.objects
     serializer_class = CommentHotWordsSer
 
 class DanmuHotWordsViewSet(viewsets.ModelViewSet):
@@ -111,5 +109,4 @@ class DanmuHotWordsViewSet(viewsets.ModelViewSet):
     queryset = Danmu_hotwords.objects.all()
     serializer_class = DanmuHotWordsSer
 
-
-
+# class

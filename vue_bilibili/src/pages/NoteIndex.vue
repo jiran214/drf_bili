@@ -2,13 +2,13 @@
     <el-main>
         <el-card class="box-card" >
         <div slot="header" class="clearfix">
-            <span>视频搜索</span>
-            <div style="margin-top: 15px;">
+          <i class="el-icon-search"></i><span style="weight:900px">视频搜索:  根据简介、标题</span>
+          <div style="margin-top: 15px;">
             <el-input placeholder="请输入内容" v-model="requestParams.search" class="input-with-select">
-                <el-button slot="append" icon="el-icon-search" color="rgb(218, 50, 55)"></el-button>
+              <el-button slot="append" icon="el-icon-search" color="rgb(218, 50, 55)"></el-button>
 
             </el-input>
-            </div>
+          </div>
         </div>
         <div class="view-flex" v-for="(item,k) in filterBox" :key="k+'a'">
             <span class="view-title">{{item.name}}</span>
@@ -97,7 +97,7 @@
                     <span>{{'分区:'+note.tname}}</span></div>
                     </div>
                     <!-- tag -->
-                    <el-tag type="info"><span>{{'tag:'+note.tag}}</span></el-tag>
+                  <el-tag style="width:45%" type="info"><span>{{ 'tag:' + note.tag }}</span></el-tag>
                 </div>
                 <div class="right" style="display: flex;flex-direction: column;align-items: center;">
                     <el-button style="width: 100px;margin-top: 20px;" type="danger" plain>添加收藏</el-button>

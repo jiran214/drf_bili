@@ -49,9 +49,10 @@ class KolInfoSer(serializers.ModelSerializer):
 
 class KolFavDetailSer(serializers.ModelSerializer):
     kols = KolInfoSer(read_only=True)
+
     class Meta:
         model = KolFav
-        fields = ['id','kols']
+        fields = ['kols']
 
 class KolFavSer(serializers.ModelSerializer):
 

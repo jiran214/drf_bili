@@ -3,15 +3,15 @@
 
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import mixins
-from rest_framework.authentication import SessionAuthentication
 from rest_framework import filters
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
-from apps.kol.filters import KolFilter
+from apps.kol.filters import KolFilter, NotesFilter
 from apps.kol.models import Info
-from apps.kol.ser import KolInfoSer
+from apps.kol.ser import KolInfoSer, KolDetailSer, KolStatSer
 
 
 class KolPagination(PageNumberPagination):
@@ -61,11 +61,10 @@ class CustomSearchFilter(filters.SearchFilter):
         return search_fileds
 
 # Create your views here.
-class KolInfoViewSet(CacheResponseMixin,mixins.RetrieveModelMixin, mixins.ListModelMixin, GenericViewSet):
+class KolInfoViewSet(mixins.ListModelMixin, GenericViewSet):
     """
-
+    up主搜索列表页
     """
-
     # 认证权限
     # authentication_classes = [SessionAuthentication]
     # permission_classes = [IsAdminUser, IsAuthenticated]
@@ -81,4 +80,32 @@ class KolInfoViewSet(CacheResponseMixin,mixins.RetrieveModelMixin, mixins.ListMo
     # 根据用户权限选择mid、name、sign、认证信息、标签作为动态搜索条件
     search_fields = ['user_name', 'mid', 'sign']
     # 还可根据互动数据和指数排序
-    ordering_fields = ['follower', 'play_view','likes']
+    ordering_fields = ['follower', 'play_view', 'likes']
+
+
+class KolDetailViewSet(mixins.RetrieveModelMixin, GenericViewSet):
+    """功能：核心一览"""
+
+    queryset = Info.objects
+    serializer_class = KolDetailSer
+
+    # filters_class=NotesFilter
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+
+class KolStatViewSet(mixins.RetrieveModelMixin, GenericViewSet):
+    """功能：流量趋势"""
+
+    queryset = Info.objects
+    serializer_class = KolStatSer
+
+    # filters_class=NotesFilter
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)

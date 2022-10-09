@@ -26,14 +26,14 @@ class KolProcess(Strategy):
             return None
 
     @staticmethod
-    def url_transform(image_url):
+    def url_transform(image_url, attr):
         before_url = 'https://i1.hdslb.com/bfs/face/'
-        base_url = 'https://imgs-bz.feigua.cn/bfs/face/'
+        base_url = 'https://imgs-bz.feigua.cn/bfs/%s/' % attr
         url = image_url.split('/')[-1]
         return base_url + url
 
     def save(self, context,logger):
-        context['face'] = self.url_transform(context['face'])
+        context['face'] = self.url_transform(context['face'], 'face')
         mid = context['mid']
         kol = self.check_kol(mid)
 
@@ -71,7 +71,7 @@ class NoteProcess(Strategy):
             kol = KolProcess.check_kol(mid)
             context['mid'] = kol
 
-            context['pic'] = KolProcess.url_transform(context['pic'])
+            context['pic'] = KolProcess.url_transform(context['pic'], 'pic')
             context.save()
             logger.info(f'创建Note-mid:{mid}-aid:{aid}')
         else:

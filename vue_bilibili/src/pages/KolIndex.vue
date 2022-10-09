@@ -2,18 +2,13 @@
     <el-main>
         <el-card class="box-card" >
         <div slot="header" class="clearfix">
-            <span>up主搜索：根据名称、mid、tag、签名</span>
-            <div style="margin-top: 15px;">
+          <i class="el-icon-search"></i><span>up主搜索:  根据名称、mid、tag、签名</span>
+          <div style="margin-top: 15px;">
             <el-input placeholder="请输入内容" v-model="requestParams.search" class="input-with-select">
-                <el-select v-model="select" slot="prepend" placeholder="请选择">
-                <el-option label="Uid" value="1"></el-option>
-                <el-option label="订单号" value="2"></el-option>
-                <el-option label="用户电话" value="3"></el-option>
-                </el-select>
-                <el-button slot="append" icon="el-icon-search" color="rgb(218, 50, 55)"></el-button>
+              <el-button slot="append" icon="el-icon-search" color="rgb(218, 50, 55)"></el-button>
 
             </el-input>
-            </div>
+          </div>
         </div>
         <div class="view-flex" v-for="(item,k) in filterBox" :key="k+'a'">
             <span class="view-title">{{item.name}}</span>
@@ -78,7 +73,9 @@
             <div slot="header" class="clearfix" style="display: flex;">
                 <div class="left" style="">
                     <!-- 头像 -->
-                    <div><el-avatar src='https://imgs-bz.feigua.cn/bfs/face/84e626cf46d0b4f0e79d4158387b1719df306a92.jpg' :size=120></el-avatar></div>
+                  <div>
+                    <el-avatar :size=120 :src=kol.face></el-avatar>
+                  </div>
                 </div>
                 <div class="mid" style="margin-left:20px  ;flex:1;display:flex;flex-direction: column;justify-content: space-around;">
                     <!-- 名称 -->
@@ -92,14 +89,12 @@
                     <!-- 签名 -->
                     <div><span>{{'签名:'+kol.sign}}</span></div>
                     <!-- tag -->
-                    <el-tag type="info">标签三</el-tag>
+                  <el-tag style="width:45%" type="info">标签</el-tag>
                 </div>
                 <div class="right" style="display: flex;flex-direction: column;align-items: center;">
                     <el-button style="width: 100px;margin-top: 20px;" type="danger" plain>添加收藏</el-button>
                     <el-button style="width: 100px;margin-right: 10px;margin-top: 15px;" type="danger" plain>查看详情</el-button>
                 </div>
-                
-                
             </div>
             <div class="text item" style="display:flex;justify-content: space-around;">
                 <span>{{'粉丝量:'+kol.follower}} </span>
@@ -287,9 +282,9 @@ export default {
     background-color: #fff;
     }
 
-.category{
-    display:flex;
-    margin-right: 10;
+.category {
+  display: flex;
+  margin-right: 10px;
 }
 
 /* 多条筛选样式 */
