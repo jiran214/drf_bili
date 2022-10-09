@@ -2,26 +2,26 @@
 
 ### 项目简介
 
-基于关键词搜索 爬取angel.co网站的公司信息
+量化B站数据信息，分析up主的数据表现，挖掘商业价值，为用户匹配优质up主
 
 ### 项目源码
 
 ### 项目启动说明
 
 1. 后端启动
-    * 拉取代码
-        * [drf_admin](https://github.com/TianPangJi/drf_admin) ，在页面中直接Download ZIP
-        * 或使用如下Git命令clone代码
-            ```shell script
-            git clone https://github.com/yuchen59384/drf_bili.git
-            ```
-    * 安装Python第三方包
-        * ```shell script
+   * 拉取代码
+      * [drf_bili](https://github.com/yuchen59384/drf_bili) ，在页面中直接Download ZIP
+      * 或使用如下Git命令clone代码
+          ```shell script
+          git clone https://github.com/yuchen59384/drf_bili.git
+          ```
+   * cd主目录，安装Python第三方包
+      * ```shell script
             pip install -r requirements.txt
             ```
-    * 配置Django配置文件
-        * 默认使用SQLite，如使用MySQL，请更改settings/dev.py下的DATABASES参数
-        * redis配置，配置settings/dev.py下REDIS_HOST、REDIS_PORT、REDIS_PWD等参数
+   * 配置Django配置文件
+      * 默认使用SQLite，如使用MySQL，请更改settings/dev.py下的DATABASES参数
+      * redis配置，配置settings/dev.py下REDIS_HOST、REDIS_PORT、REDIS_PWD等参数
     * 数据库迁移
         * ```shell script
             python manage.py migrate
