@@ -71,7 +71,7 @@ class NoteProcess(Strategy):
             kol = KolProcess.check_kol(mid)
             context['mid'] = kol
 
-            context['pic'] = KolProcess.url_transform(context['pic'], 'pic')
+            context['pic'] = KolProcess.url_transform(context['pic'], 'archive')
             context.save()
             logger.info(f'创建Note-mid:{mid}-aid:{aid}')
         else:
@@ -85,7 +85,7 @@ class NoteStateProcess(Strategy):
 
     @staticmethod
     def get_item(context):
-        filed_map = ('aid', 'view_n', 'danmaku', 'reply', 'reply', 'coin', 'share', 'like_n')
+        filed_map = ('aid', 'view_n', 'danmaku', 'reply', 'reply', 'coin', 'share', 'like_n', 'favorite')
         item = {filed: context[filed] for filed in filed_map}
         item['aid'] = NoteProcess.check_note(aid=item['aid'])
         return item
@@ -127,13 +127,10 @@ class ContentProcess(Strategy):
             if context['aid']:
                 aid = NoteProcess.check_note(aid=context['aid'])
                 context['aid'] =aid
-                msg=str(context['aid'])
             elif context['cid']:
                 cid =NoteProcess.check_note(cid=context['cid'])
                 context['cid'] = cid
-                msg=str(context['cid'])
             else:
-                msg='没有找到aid和cid'
                 return context
         except Exception as e:
             msg=f'没有找到外键{e}'
@@ -159,11 +156,13 @@ class ItemContext():
         self.logger=spider.logger
 
         if spider.name == 'get_kol':
-            self.Stragety = [KolProcess,KolStateProcess]
+            self.Stragety = [KolProcess, KolStateProcess]
         elif spider.name == 'get_note':
-            self.Stragety = [NoteProcess,NoteStateProcess]
-        elif spider.name == 'get_danmu_comment':
-            self.Stragety = [ContentProcess,HotwordProcess]
+            self.Stragety = [NoteProcess, NoteStateProcess]
+        elif spider.name == 'get_danmu':
+            self.Stragety = [ContentProcess, HotwordProcess]
+        elif spider.name == 'get_comment':
+            self.Stragety = [ContentProcess, HotwordProcess]
 
     def context_interface(self):
         for s in self.Stragety:

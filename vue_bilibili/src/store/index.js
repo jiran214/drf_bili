@@ -11,6 +11,8 @@ const store = new Vuex.Store({
         // noteFavs:[],
         notes: [],
         user: {},
+        noteDetail: {},
+        kolDetail: {}
     },
     mutations: { // 与 state 同步执行；可以改变 state 对应的值的方法
         INIT_KOLS(state, resp) {
@@ -28,6 +30,12 @@ const store = new Vuex.Store({
         INIT_USER(state, resp) {
             state.user = resp.data
         },
+        INIT_NOTESDETAIL(state, resp) {
+            state.noteDetail = resp.data
+        },
+        INIT_KOLSDETAIL(state, resp) {
+            state.kolDetail = resp.data
+        }
     },
     // 异步执行
     actions: {

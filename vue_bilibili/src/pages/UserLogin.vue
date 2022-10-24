@@ -44,9 +44,9 @@ import { Message } from 'element-ui'
         code:'',
         radioLabel:'登录',
         loginForm: {
-            username: 'root',
-            password: '123456',
-            // code: '',
+          username: 'admin',
+          password: 'admin',
+          // code: '',
         },
         regForm: {
         },

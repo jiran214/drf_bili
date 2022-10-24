@@ -9,7 +9,7 @@ from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
 from apps.note.filters import NoteFilter
 from apps.note.ser import Info, Danmu, Comment, Danmu_hotwords, Comment_hotwords, \
-    NoteInfoSer, NoteDanmuSer, NoteCommentSer, DanmuHotWordsSer, CommentHotWordsSer, NoteDetailSer
+    NoteInfoSer, NoteMessageSer, NoteDetailSer
 
 from apps.note import tasks
 
@@ -56,6 +56,7 @@ class NotePagination(PageNumberPagination):
     page_size_query_param = 'page_size'
     page_query_param = "page"
     max_page_size = 100
+
     # ordering = ['bv']
 
 # Create your views here.
@@ -66,7 +67,7 @@ class NoteInfoViewSet(mixins.ListModelMixin, GenericViewSet):
     # permission_classes = [VipPermission]
     # throttle_classes = [AnonRateThrottle]
 
-    queryset = Info.objects
+    queryset = Info.objects.order_by('-view_n')
     serializer_class = NoteInfoSer
     pagination_class = NotePagination
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
@@ -85,28 +86,13 @@ class NoteDetailViewSet(mixins.RetrieveModelMixin, GenericViewSet):
     返回最新笔记的详情信息
 
     """
-    queryset = Info.objects
+    queryset = Info.objects.all()
     serializer_class = NoteDetailSer
 
-class CommentViewSet(viewsets.ModelViewSet):
+
+class NoteMessageViewSet(viewsets.ModelViewSet):
     """
 
     """
-    queryset = Comment.objects
-    serializer_class = NoteCommentSer
-
-class CommentHotWordsViewSet(viewsets.ModelViewSet):
-    """
-
-    """
-    queryset = Comment_hotwords.objects
-    serializer_class = CommentHotWordsSer
-
-class DanmuHotWordsViewSet(viewsets.ModelViewSet):
-    """
-
-    """
-    queryset = Danmu_hotwords.objects.all()
-    serializer_class = DanmuHotWordsSer
-
-# class
+    queryset = Info.objects
+    serializer_class = NoteMessageSer

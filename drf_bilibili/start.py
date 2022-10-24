@@ -34,7 +34,9 @@ def dfs_showdir(path, depth):
 
 
 if __name__ == '__main__':
-    dfs_showdir('.', 0)
+    # dfs_showdir('.', 0)
+    s = {1: 1}
+    print(1 in s)
 
 """             
 +--.sqlenv

@@ -87,22 +87,29 @@
                     <div><a :href=note.short_link style="text-decoration: none; color: #444;">
                     <span  style="font-weight:1000">{{note.title}}</span>
                     </a></div>
-                    <!-- 简介 -->
-                    <div><span>{{'简介:'+note.des}}</span>
+                  <!-- 简介 -->
+                  <div><span>{{ '简介:' + note.desc }}</span>
                     <!-- 作者 时间 分区 -->
-                    <div><span style="font-weight:800">{{'作者:'+note.name}}</span>
-                    <el-divider direction="vertical"></el-divider>
-                    <span>{{'时间:'+note.ctime}}</span>
-                    <el-divider direction="vertical"></el-divider>
-                    <span>{{'分区:'+note.tname}}</span></div>
-                    </div>
-                    <!-- tag -->
-                  <el-tag style="width:45%" type="info"><span>{{ 'tag:' + note.tag }}</span></el-tag>
+                    <div><span style="font-weight:800">{{ '作者:' + note.name }}</span>
+                      <el-divider direction="vertical"></el-divider>
+                      <span>{{ '时间:' + note.ctime }}</span>
+                      <el-divider direction="vertical"></el-divider>
+                      <span>{{ '分区:' + note.tname }}</span></div>
+                  </div>
+                  <!-- tag -->
+                  <div style="display:flex;">
+                    <el-tag v-for="(tag,index) in note.tags" :key="index" style="margin-right: 10px" type="info">
+                      <span>{{ tag }}</span></el-tag>
+                  </div>
+
                 </div>
-                <div class="right" style="display: flex;flex-direction: column;align-items: center;">
-                    <el-button style="width: 100px;margin-top: 20px;" type="danger" plain>添加收藏</el-button>
-                    <el-button style="width: 100px;margin-right: 10px;margin-top: 15px;" type="danger" plain>查看详情</el-button>
-                </div>
+              <div class="right" style="display: flex;flex-direction: column;align-items: center;">
+                <el-button style="width: 100px;margin-top: 20px;" type="danger" plain>添加收藏</el-button>
+                <el-button plain style="width: 100px;margin-right: 10px;margin-top: 15px;" type="danger"
+                           @click="goDetail(note.id,note)">
+                  视频分析
+                </el-button>
+              </div>
                 
                 
             </div>
@@ -178,18 +185,18 @@ export default {
             reply_min: '',
             favorite_max: '',
             favorite_min: '',
-            coin_max: '',
-            coin_min: '',
-            share_max: '',
-            share_min: '',
-            like_n_max: '',
-            like_n_min: '',
-            duration_min: '',
-            duration_max: '',
-            pubdate: '',
-            search: '',
-            ordering: '',
-            tag:''
+          coin_max: '',
+          coin_min: '',
+          share_max: '',
+          share_min: '',
+          like_n_max: '',
+          like_n_min: '',
+          duration_min: '',
+          duration_max: '',
+          pubdate: '',
+          search: '',
+          ordering: '-view_n',
+          tag: ''
         },
         filterBox: [
         {
@@ -250,16 +257,28 @@ export default {
 
     }
     },
-    methods:{
-        // 分页
-        hCurrentChange(curPage) {
-            // alert(curPage)
-            // 1. 更新页码
-            this.pageParams.page = curPage
-            // 2. 重发请求
-        },
+    methods: {
+      // 详情页
+      goDetail(id, note) {
+        let routeUrl = this.$router.resolve({
+          path: '/NoteDetail',
+          query: {
+            id: id,
+            noteInfo: encodeURIComponent(JSON.stringify(note)),
+          }
+        })
+        window.open(routeUrl.href, '_blank')
+      },
 
-        orderClick(k){
+      // 分页
+      hCurrentChange(curPage) {
+        // alert(curPage)
+        // 1. 更新页码
+        this.pageParams.page = curPage
+        // 2. 重发请求
+      },
+
+      orderClick(k) {
             // 添加 active ==> true 显示 `active样式`
             this.order.map(item => {
                 item.active = false

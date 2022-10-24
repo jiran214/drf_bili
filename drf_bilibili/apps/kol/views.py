@@ -11,7 +11,7 @@ from rest_framework_extensions.cache.mixins import CacheResponseMixin
 
 from apps.kol.filters import KolFilter, NotesFilter
 from apps.kol.models import Info
-from apps.kol.ser import KolInfoSer, KolDetailSer, KolStatSer
+from apps.kol.ser import KolInfoSer, KolDetailSer, KolStatSer, kolMessageSer
 
 
 class KolPagination(PageNumberPagination):
@@ -86,9 +86,12 @@ class KolInfoViewSet(mixins.ListModelMixin, GenericViewSet):
 class KolDetailViewSet(mixins.RetrieveModelMixin, GenericViewSet):
     """功能：核心一览"""
 
+    # filter_backends = [DjangoFilterBackend]
+
     queryset = Info.objects
     serializer_class = KolDetailSer
 
+    # filter_class = NotesFilter
     # filters_class=NotesFilter
 
     def retrieve(self, request, *args, **kwargs):
@@ -97,15 +100,10 @@ class KolDetailViewSet(mixins.RetrieveModelMixin, GenericViewSet):
         return Response(serializer.data)
 
 
-class KolStatViewSet(mixins.RetrieveModelMixin, GenericViewSet):
+class kolMessageViewSet(mixins.RetrieveModelMixin, GenericViewSet):
     """功能：流量趋势"""
 
     queryset = Info.objects
-    serializer_class = KolStatSer
+    serializer_class = kolMessageSer
 
     # filters_class=NotesFilter
-
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)

@@ -2,29 +2,41 @@ import os
 from django.utils import timezone as datetime # 不想大面积修改就这么做
 
 import scrapy
-from crawl.settings import redis_conn, LOG_FILE
+from crawl.settings import redis_conn
 from crawl.items import KolItem
 
 class GetKolSpider(scrapy.Spider):
     name = 'get_kol'
 
     # start_urls = ['http://www.baidu.com/']
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.mid = str(getattr(self, 'mid', None))
+        self.cookie = redis_conn.get('kol_cookie')
 
     # 解析粉丝、关注、mid
     def start_requests(self):
         # 爬取笔记作者
+        url = 'https://api.bilibili.com/x/relation/stat?vmid='
         while 1:
+            if self.mid:
+                self.user_id = self.mid
+                self.logger.info(f'开始爬取:{self.user_id}')
+                yield scrapy.Request(url + str(self.user_id) + '&jsonp=json', callback=self.follow_parse)
+
+                break
             self.user_id = redis_conn.brpop('wait_user_mid')
             self.logger.info(f'开始爬取:{self.user_id}')
-            url = 'https://api.bilibili.com/x/relation/stat?vmid=' + str(self.user_id[1]) + '&jsonp=json'
-            yield scrapy.Request(url, callback=self.follow_parse)
+            yield scrapy.Request(url + str(self.user_id[1]) + '&jsonp=json', callback=self.follow_parse)
 
     def follow_parse(self, response):
         self.headers = {
-            'Cookie': "buvid3=291FE13E-2DA3-591C-20AA-C29ACE40718F68927infoc; b_nut=1660481067; buvid4=3153120C-9D38-EF44-26EE-C602D23D60E768927-022081420-cduZ3OaNjcCVwO2g23YSkw==; i-wanna-go-back=-1; _uuid=DB2EA38F-E5310-C721-B354-A310C12EFBE6772442infoc; buvid_fp_plain=undefined; DedeUserID=410282523; DedeUserID__ckMd5=0f009d0a30b0f8dc; hit-dyn-v2=1; b_ut=5; LIVE_BUVID=AUTO5116604849511857; rpdid=|(um~k)J)lmJ0J'uYY|R)luu); nostalgia_conf=-1; CURRENT_BLACKGAP=0; fingerprint3=afdb02d98c3d3e2641b19d395113f230; blackside_state=1; is-2022-channel=1; SESSDATA=36c2850f,1677744238,99fbd*91; bili_jct=646547de491a4e7c0919a3a16f876712; sid=6szqc7nc; fingerprint=5eaeda73cb80d727cd671bf00d4b42a0; buvid_fp=5eaeda73cb80d727cd671bf00d4b42a0; CURRENT_QUALITY=80; PVID=1; innersign=0; CURRENT_FNVAL=16; bp_video_offset_410282523=704295123925598200; b_lsid=2B6A101E5_18327D2FBA5",
-            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36 Edg/105.0.1343.27',
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/106.0.0.0 Safari/537.36 Edg/106.0.1370.42',
+            'cookie': self.cookie,
+            'authority': 'api.bilibili.com'
         }
         info = response.json()
+
         user_item = KolItem()
         follower = info['data']['follower']
         following = info['data']['following']
@@ -40,7 +52,6 @@ class GetKolSpider(scrapy.Spider):
     def view_parse(self, response):
 
         info = response.json()
-        # print(info)
         play_view = info['data']['archive']['view']
         read_view = info['data']['article']['view']
         likes = info['data']['likes']
@@ -50,7 +61,7 @@ class GetKolSpider(scrapy.Spider):
         # user_item['read_view'] = read_view
         user_item['likes'] = likes
         mid = response.meta['user_item']['mid']
-        new_url = 'https://api.bilibili.com/x/space/acc/info?mid=' + str(mid) + '&jsonp=jsonp'
+        new_url = 'https://api.bilibili.com/x/space/acc/info?mid=' + str(mid)
         # yield user_item
         yield scrapy.Request(new_url, callback=self.kol_parse, headers=self.headers, meta={'user_item': user_item})
 

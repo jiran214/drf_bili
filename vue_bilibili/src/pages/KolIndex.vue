@@ -92,8 +92,11 @@
                   <el-tag style="width:45%" type="info">标签</el-tag>
                 </div>
                 <div class="right" style="display: flex;flex-direction: column;align-items: center;">
-                    <el-button style="width: 100px;margin-top: 20px;" type="danger" plain>添加收藏</el-button>
-                    <el-button style="width: 100px;margin-right: 10px;margin-top: 15px;" type="danger" plain>查看详情</el-button>
+                  <el-button style="width: 100px;margin-top: 20px;" type="danger" plain>添加收藏</el-button>
+                  <el-button plain style="width: 100px;margin-right: 10px;margin-top: 15px;" type="danger"
+                             @click="goDetail(kol.id,kol)">
+                    查看详情
+                  </el-button>
                 </div>
             </div>
             <div class="text item" style="display:flex;justify-content: space-around;">
@@ -209,17 +212,28 @@ export default {
 
     }
     },
-    methods:{
-        // 分页
-        hCurrentChange(curPage) {
-            // alert(curPage)
-            // 1. 更新页码
-            this.pageParams.page = curPage
-            // 2. 重发请求
-        },
+    methods: {
+      //详情页
+      goDetail(id, kol) {
+        let routeUrl = this.$router.resolve({
+          path: '/KolDetail',
+          query: {
+            id: id,
+            kolInfo: encodeURIComponent(JSON.stringify(kol)),
+          }
+        })
+        window.open(routeUrl.href, '_blank')
+      },
+      // 分页
+      hCurrentChange(curPage) {
+        // alert(curPage)
+        // 1. 更新页码
+        this.pageParams.page = curPage
+        // 2. 重发请求
+      },
 
-        orderClick(k){
-            // 添加 active ==> true 显示 `active样式`
+      orderClick(k) {
+        // 添加 active ==> true 显示 `active样式`
             this.order.follower=false
             this.order.play_view=false
             this.order.likes=false

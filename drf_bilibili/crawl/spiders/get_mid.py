@@ -59,7 +59,7 @@ class GetMidSpider(scrapy.Spider):
             for page in range(1, max_pages + 1):
                 days = 1  # 爬取最近天数
                 order_type = 'click'  # order_type: scores-评论数, click-播放量
-                ps = 20
+                ps = 3
                 start_date = (datetime.now() - timedelta(days=days)).strftime('%Y%m%d')
                 end_date = datetime.now().strftime('%Y%m%d')
                 url = 'https://s.search.bilibili.com/cate/search?search_type=video&view_type=hot_rank&order=%s&cate_id' \
@@ -70,7 +70,7 @@ class GetMidSpider(scrapy.Spider):
                     url, meta={'page': page, 'cate_id': cate_id}, callback=self.user_id_parse
                 )
 
-                if page==3:
+                if page == 1:
                     break
 
     def user_id_parse(self, response):

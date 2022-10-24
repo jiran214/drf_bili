@@ -47,11 +47,12 @@ INSTALLED_APPS = [
     'django_filters',
     'rest_framework',
     'rest_framework_simplejwt',
-    'corsheaders',    # 配置跨域
+
+    'debug_toolbar.apps.DebugToolbarConfig',
+
+    'corsheaders',  # 配置跨域
     'django_celery_results',
     'django_celery_beat'
-    
-
 
 ]
 
@@ -62,17 +63,24 @@ CORS_ORIGIN_ALLOW_ALL = True
 #     '*'
 # )
 
+# 显示设置调试工具不要调整settings中的设置
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+INTERNAL_IPS = ("127.0.0.1",)
+# debug_toolbar 组件选项
+# debug_toolbar 配置项
 MIDDLEWARE = [
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'corsheaders.middleware.CorsMiddleware',     # 添加此行
+    'corsheaders.middleware.CorsMiddleware',  # 添加此行
     'django.middleware.common.CommonMiddleware',
     # 'django.middleware.csrf.CsrfViewMiddleware',
 
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'debug_toolbar.middleware.DebugToolbarMiddleware',  # 调试
 ]
 
 ROOT_URLCONF = 'bilibili.urls'

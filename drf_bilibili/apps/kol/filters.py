@@ -36,10 +36,11 @@ class KolFilter(django_filters.rest_framework.FilterSet):
 
 class NotesFilter(django_filters.rest_framework.FilterSet):
     recently_data = django_filters.NumberFilter(method='recent_data_filter', help_text="最近多少天新增数据")
+    recently_notes = django_filters.NumberFilter(method='recent_notes_filter', help_text="最近多少天笔记")
 
     class Meta:
         model = Info
-        fields = '__all__'
+        fields = ['sex']
 
     def recent_data_filter(self, queryset, name, value):
         """
@@ -47,4 +48,12 @@ class NotesFilter(django_filters.rest_framework.FilterSet):
         """
         ts = time.time() - 86400 * int(value)
         queryset = queryset.filter(pubdate__gte=ts)
+        return queryset
+
+    def recent_notes_filter(self, queryset, name, value):
+        """
+        近几天新增数据
+        """
+        ts = time.time() - 86400 * int(value)
+        queryset = queryset.filter(notes__pubdate__gte=ts)
         return queryset

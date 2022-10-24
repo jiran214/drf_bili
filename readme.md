@@ -180,11 +180,13 @@
 8. 其它：权限、流量控制，jwt认证
 
 ### 功能预览（按应用划分）
-![avatar](./Snipaste_2022-10-09_13-40-56.png)
-![avatar](./Snipaste_2022-10-09_13-41-41.png)
-![avatar](./Snipaste_2022-10-09_13-42-03.png)
-![avatar](./Snipaste_2022-10-09_13-38-01.png)
-![avatar](./Snipaste_2022-10-09_13-42-16.png)
+![avatar](./show/Snipaste_2022-10-09_13-40-56.png)
+![avatar](./show/Snipaste_2022-10-09_13-41-41.png)
+![avatar](./show/Snipaste_2022-10-09_13-42-03.png)
+![avatar](./show/Snipaste_2022-10-09_13-38-01.png)
+![avatar](./show/Snipaste_2022-10-09_13-42-16.png)
+![avatar](./show/Snipaste_2022-10-24_23-42-39.png)
+![avatar](./show/Snipaste_2022-10-25_00-39-07.png)
 
 
 
