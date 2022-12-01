@@ -12,7 +12,7 @@ DATABASES = {
         # 'HOST': 'db',
         'PORT': 3306,  # 数据库端口
         'USER': 'root',  # 数据库用户名
-        'PASSWORD': '123456',  # 数据库用户密码
+        'PASSWORD': '',  # 数据库用户密码
         'NAME': 'bili',  # 数据库名字
         'OPTIONS' : { 'charset' : 'utf8mb4' },
     }

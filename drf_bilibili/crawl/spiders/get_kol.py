@@ -11,7 +11,7 @@ class GetKolSpider(scrapy.Spider):
     # start_urls = ['http://www.baidu.com/']
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.mid = str(getattr(self, 'mid', None))
+        self.mid = getattr(self, 'mid', None)
         self.cookie = redis_conn.get('kol_cookie')
 
     # 解析粉丝、关注、mid
@@ -50,7 +50,7 @@ class GetKolSpider(scrapy.Spider):
 
     # 解析播放、阅读、喜欢
     def view_parse(self, response):
-
+        # todo 对响应对象的状态检查
         info = response.json()
         play_view = info['data']['archive']['view']
         read_view = info['data']['article']['view']

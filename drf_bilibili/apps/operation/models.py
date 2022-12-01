@@ -13,14 +13,14 @@ class KolFav(models.Model):
     """
     用户收藏
     """
-    user = models.ForeignKey(User, verbose_name="用户", on_delete=models.CASCADE)
-    kols = models.ForeignKey(kol_info, verbose_name="商品", help_text="商品id", on_delete=models.CASCADE)
+    user = models.ForeignKey(User, verbose_name="用户", on_delete=models.DO_NOTHING)
+    kols = models.ForeignKey(kol_info, verbose_name="商品", help_text="商品id", on_delete=models.DO_NOTHING)
     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
 
     class Meta:
         verbose_name = '用户达人收藏'
         verbose_name_plural = verbose_name
-        unique_together = ("user", "kols")
+        # unique_together = ("user", "kols")
 
     def __str__(self):
         return self.user.name

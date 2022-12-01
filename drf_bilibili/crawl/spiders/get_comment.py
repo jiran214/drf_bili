@@ -23,16 +23,24 @@ class GetDanmuCommentSpider(scrapy.Spider):
     RECENT_MONTHS = 3  # 最近几周的弹幕
     DANMU_LIMIT = 1  # 最多爬取几天弹幕
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.aid = getattr(self, 'aid', None)
+
     def start_requests(self):
         # redis
         while 1:
-            self.aid = redis_conn.brpop('wait_aid')[1]
+            comment_url = "https://api.bilibili.com/x/v2/reply/main?mode=3&next=%s&oid=%s&plat=1&type=1"
+            if self.aid:
+                for p in range(self.PAGE):
+                    yield scrapy.Request(url=comment_url % (p + 1, str(self.aid)), callback=self.comment_parse,
+                                     headers=self.headers)
+                break
 
+            self.aid = redis_conn.brpop('wait_aid')[1]
             self.logger.info(f'开始爬取aid:{self.aid}评论')
             # 爬取视频评论
-            comment_url = "https://api.bilibili.com/x/v2/reply/main?mode=3&next=%s&oid=%s&plat=1&type=1"
             for p in range(self.PAGE):
-                # pass
                 yield scrapy.Request(url=comment_url % (p + 1, str(self.aid)), callback=self.comment_parse,
                                      headers=self.headers)
 

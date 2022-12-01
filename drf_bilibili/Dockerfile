@@ -4,7 +4,8 @@ FROM python:3.8
 # 安装netcat
 RUN sed -i s@/archive.ubuntu.com/@/mirrors.aliyun.com/@g /etc/apt/sources.list
 RUN apt-get update && apt install -y netcat
-RUN #yum install -y netcat
+#RUN yum install -y netcat
+#RUN apt-get update && apt install -y netcat
 # 镜像作者
 MAINTAINER JiRan
 
@@ -35,7 +36,7 @@ RUN pip install -r requirements.txt
 RUN sed -i 's/\r//' ./start.sh
 
 # 给start.sh可执行权限
-RUN chmod +x ./start.sh
+RUN chmod 777 ./start.sh
 
 # 数据迁移，并使用uwsgi启动服务
-ENTRYPOINT /bin/bash ./start.sh
+ENTRYPOINT sh ./start.sh

@@ -1,14 +1,18 @@
 import os
 import random
-
 import time
+import sys
 
+# sys.path.append('/home/ran/PycharmProjects/mypro/drf_bilibili/crawl')
+# print(sys.path)
 import scrapy
-
 from crawl.items import NoteItem
 from crawl.settings import redis_conn
 from scrapy import Request
 from django.utils import timezone as datetime
+from scrapy.crawler import CrawlerProcess
+from scrapy.utils.project import get_project_settings
+
 
 class GetNoteSpider(scrapy.Spider):
     """
@@ -121,3 +125,9 @@ class GetNoteSpider(scrapy.Spider):
         # self.logger.info(f'aid:{self.user_id}-aid:{aid}爬取结束')
 
         yield note_item
+
+if __name__ == '__main__':
+
+    process = CrawlerProcess(get_project_settings())
+    process.crawl(GetNoteSpider)
+    process.start()
