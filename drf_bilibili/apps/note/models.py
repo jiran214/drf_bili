@@ -4,9 +4,12 @@ from datetime import datetime
 from django.db import models
 from apps.kol.models import Info as KolInfo
 
+from utils.model import BaseModel
+
+
 # Create your models here.
 
-class Info(models.Model):
+class Info(BaseModel):
     #基本信息
     aid = models.CharField(unique=True,max_length=20,verbose_name="视频aid")
     bvid = models.CharField(unique=True,max_length=20,verbose_name="稿件ID")
@@ -42,15 +45,19 @@ class Info(models.Model):
     coin = models.IntegerField(default=0, verbose_name="投币数")
     share = models.IntegerField(default=0, verbose_name="分享数")
     like_n = models.IntegerField(default=0, verbose_name="点赞数")
-    update_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
+    # update_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
-    create_time=models.DateTimeField(null=True,default=datetime.now, verbose_name="添加时间")
+    # create_time=models.DateTimeField(null=True,default=datetime.now, verbose_name="添加时间")
 
     class Meta:
         verbose_name = '笔记'
         verbose_name_plural = verbose_name
 
-class Stat(models.Model):
+
+    def __str__(self):
+        return f'aid:{self.aid}-title:{self.title}'
+
+class Stat(BaseModel):
     # 互动数据stat
 
     aid = models.ForeignKey(to=Info, to_field="aid",db_column='aid', related_name="states", on_delete=models.CASCADE)
@@ -61,22 +68,25 @@ class Stat(models.Model):
     coin = models.IntegerField(default=0, verbose_name="投币数")
     share = models.IntegerField(default=0, verbose_name="分享数")
     like_n = models.IntegerField(default=0, verbose_name="点赞数")
-    create_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
+    # create_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
         verbose_name = '状态'
         verbose_name_plural = verbose_name
 
-class Danmu(models.Model):
+    def __str__(self):
+        return f'aid:{self.aid}-hot_word:{self.view_n}'
+
+class Danmu(BaseModel):
     cid = models.ForeignKey(to=Info, to_field="cid", db_column='cid',related_name="danmus", on_delete=models.CASCADE)
     content = models.CharField(max_length=100, verbose_name="弹幕内容")
-    ctime = models.CharField(max_length=10,verbose_name="发布时间")
+    # ctime = models.CharField(max_length=10,verbose_name="发布时间")
 
     class Meta:
         verbose_name = '弹幕'
         verbose_name_plural = verbose_name
 
-class Comment(models.Model):
+class Comment(BaseModel):
 
     aid=models.ForeignKey(to=Info,to_field="aid",db_column='aid',related_name="comments",on_delete=models.CASCADE)
     content = models.CharField(max_length=300, verbose_name="评论内容")
@@ -86,37 +96,40 @@ class Comment(models.Model):
     mid=models.CharField(max_length=30,verbose_name="用户编号")
     uname=models.CharField(max_length=20,verbose_name="用户名称")
 
-    ctime=models.IntegerField(verbose_name="发布时间")
+    # ctime=models.IntegerField(verbose_name="发布时间")
 
     class Meta:
         verbose_name = '评论'
         verbose_name_plural = verbose_name
 
-class Comment_hotwords(models.Model):
+class Comment_hotwords(BaseModel):
 
     aid = models.ForeignKey(to=Info, to_field="aid", related_name="comment_hotword",db_column='aid', on_delete=models.CASCADE)
     hot_word = models.CharField(max_length=10, verbose_name="评论内容")
     num=models.IntegerField(verbose_name="数量")
 
-    create_time=models.CharField(max_length=10,verbose_name="创建时间")
+    # create_time=models.CharField(max_length=10,verbose_name="创建时间")
 
     class Meta:
         unique_together = (('aid', 'hot_word'),)
         verbose_name = '评论热词'
         verbose_name_plural = verbose_name
 
-class Danmu_hotwords(models.Model):
+class Danmu_hotwords(BaseModel):
 
     # cid=models.IntegerField(verbose_name="danmu编号")
     cid = models.ForeignKey(to=Info, to_field="cid", related_name="danmu_hotword",db_column='cid', on_delete=models.CASCADE)
     hot_word = models.CharField(max_length=10, verbose_name="damu内容")
     num=models.IntegerField(verbose_name="数量")
 
-    update_time = models.CharField(max_length=10, verbose_name="更新时间")
-    create_time = models.CharField(max_length=10, verbose_name="创建时间")
+    # update_time = models.CharField(max_length=10, verbose_name="更新时间")
+    # create_time = models.CharField(max_length=10, verbose_name="创建时间")
 
     class Meta:
         unique_together = (('cid', 'hot_word'),)
         verbose_name = '弹幕热词'
         verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return f'cid:{self.cid}-hot_word:{self.hot_word}'
 

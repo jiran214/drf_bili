@@ -1,6 +1,5 @@
 # Scrapy settings for crawl project
 # django混用配置
-import datetime
 import os
 import sys
 import redis

@@ -2,8 +2,6 @@ import scrapy
 from crawl.items import CommentItem, DanmuItem
 from crawl.settings import redis_conn
 
-import re, datetime
-
 
 class GetDanmuCommentSpider(scrapy.Spider):
     """
@@ -60,7 +58,7 @@ class GetDanmuCommentSpider(scrapy.Spider):
                 comment_item['like_n'] = comment['like']
                 comment_item['mid'] = comment['mid']
                 comment_item['uname'] = comment['member']['uname']
-                comment_item['ctime'] = comment['ctime']
+                # comment_item['ctime'] = comment['ctime']
 
                 self.logger.info(f'aid:{self.aid}评论爬取完毕')
                 yield comment_item

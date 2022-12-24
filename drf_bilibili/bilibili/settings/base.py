@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'apps.note',
     'apps.users',
     'apps.operation',
+    'apps.test',
     'crawl',
 
     'django_filters',

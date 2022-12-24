@@ -3,9 +3,16 @@ from django.db import models
 from datetime import datetime
 from django.db import models
 
+from utils.model import BaseModel
 
 # Create your models here.
-class Info(models.Model):
+class Info(BaseModel):
+    class Suit(models.IntegerChoices):
+        DIAMOND = 1
+        SPADE = 2
+        HEART = 3
+        CLUB = 4
+
 
     mid = models.CharField(unique=True,max_length=20,verbose_name="up主编号")
     user_name = models.CharField(max_length=20, verbose_name="")
@@ -34,11 +41,10 @@ class Info(models.Model):
     follower = models.IntegerField(default=0, verbose_name="粉丝")
     play_view = models.IntegerField(default=0, verbose_name="累计播放量")
     likes = models.IntegerField(default=0, verbose_name="累计获赞量")
-    update_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
-    create_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
+    # update_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
+    # create_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     #私密字段# 位置
-
     #粉丝数据# 扩展字段# 指数
 
     #作品数据# 作品标签# 互动平均数据
@@ -47,7 +53,10 @@ class Info(models.Model):
         verbose_name = '达人'
         verbose_name_plural = verbose_name
 
-class Stat(models.Model):
+    def __str__(self):
+        return f'mid:{self.mid}-username:{self.user_name}'
+
+class Stat(BaseModel):
     # 视频数据
 
     mid = models.ForeignKey(to=Info, to_field="mid", db_column='mid', related_name="states", on_delete=models.CASCADE)
@@ -55,12 +64,14 @@ class Stat(models.Model):
     follower = models.IntegerField(default=0, verbose_name="粉丝")
     play_view = models.IntegerField(default=0, verbose_name="累计播放量")
     likes = models.IntegerField(default=0, verbose_name="累计获赞量")
-    create_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
+    # create_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:
         verbose_name = '状态'
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return f'mid:{self.mid}-username:{self.play_view}'
     """
     商业数据:报价 是否开直播、带货商品、联系方式、合作品牌、由投放报价
     """

@@ -94,8 +94,8 @@ class GetKolSpider(scrapy.Spider):
 
         for filed, attr in filed_offical_map.items():
             user_item[filed] = info['official'].get(attr)
-
-        user_item['update_time']=datetime.datetime.now()
+        from django.utils import timezone
+        user_item['update_time']=timezone.datetime.now()
         # if not user_item['sign']:
         #     user_item['sign']='该用户没有签名'
         user_name=user_item['user_name']

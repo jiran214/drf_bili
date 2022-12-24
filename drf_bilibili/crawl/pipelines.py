@@ -1,6 +1,3 @@
-
-import datetime
-
 from crawl.process import ItemContext
 from crawl.settings import redis_conn
 
