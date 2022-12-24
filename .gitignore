@@ -1,6 +1,4 @@
-drf_bili/apps/*/migrations/*
-drf_bili/static
-!drf_bili/apps/*/migrations/__init__.py
+
 *.pyc
 /*.pyc
 */*.pyc
@@ -20,3 +18,4 @@ dump.rdb
 *.zip
 *.swp
 /drf_bilibili/static/
+/drf_bilibili/apps/*/migrations/
