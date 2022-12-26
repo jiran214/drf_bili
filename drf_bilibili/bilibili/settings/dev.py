@@ -3,6 +3,7 @@ from .log import *
 from .celeryConf import *
 from .drfConf import *
 
+ALLOWED_HOSTS = ['*']
 DEBUG = True
 # 其他相关配置
 DATABASES = {

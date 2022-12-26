@@ -1,5 +1,9 @@
 from .base import *
-ALLOWED_HOSTS = ['1.117.72.234']
+from .log import *
+from .celeryConf import *
+from .drfConf import *
+
+ALLOWED_HOSTS = ['*']
 DEBUG = False
 # 其他相关配置
 DATABASES = {
