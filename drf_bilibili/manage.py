@@ -3,13 +3,13 @@
 import os
 import sys
 
+from drf_bilibili.bilibili.wsgi import profile
+
 
 def main():
     """Run administrative tasks."""
 
     # 配置
-    # profile = os.environ.get("PROJECT_PROFILE", 'dev')
-    profile = os.environ.get("PROJECT_PROFILE", 'prod')
     os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bilibili.settings.{}'.format(profile))
 
     try:
