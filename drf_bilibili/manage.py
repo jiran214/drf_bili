@@ -3,14 +3,13 @@
 import os
 import sys
 
-from drf_bilibili.bilibili.wsgi import profile
-
+from bilibili.settings import base
 
 def main():
     """Run administrative tasks."""
 
     # 配置
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bilibili.settings.{}'.format(profile))
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bilibili.settings.{}'.format(base.profile))
 
     try:
         from django.core.management import execute_from_command_line

@@ -4,10 +4,9 @@ import os
 import sys
 import redis
 
-from drf_bilibili.bilibili.wsgi import profile
 
 sys.path.append(os.path.dirname(os.path.abspath('.')))
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bilibili.settings.{}'.format(profile))
+# os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bilibili.settings.{}'.format(profile))
 import django
 
 django.setup()
